@@ -85,6 +85,17 @@ class UserController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    const data = request.all()
+    
+    const user = await User.findBy('id', params.id)
+
+    user.fill(user.toJSON())
+
+    user.merge(data)
+    
+    let result = await user.save()
+
+    return response.json(result)
   }
 
   /**
@@ -98,14 +109,20 @@ class UserController {
   async destroy ({ params, request, response }) {
   }
 
-  async signUp({ auth, request, response }) {
+  async signIn({ auth, request, response }) {
     let { email, password } = request.all()
     const user = await User.findBy('email', email)
-    if(!user) return response.status(404).send({message: 'Usuario não encontrado'})
+
+    if(! ) return response.status(404).send({message: 'Usuario não encontrado'})
+
     const varify = await Hash.verify(password, user.password)
+
     if(!varify) return response.status(400).send({message: 'Senha inválida'})
+
     const { token } = await auth.generate(user, true)
+
     user.token = token
+
     response.send(user.toJSON())
   }
 }
