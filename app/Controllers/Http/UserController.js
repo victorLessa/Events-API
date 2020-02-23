@@ -113,7 +113,7 @@ class UserController {
     let { email, password } = request.all()
     const user = await User.findBy('email', email)
 
-    if(! ) return response.status(404).send({message: 'Usuario não encontrado'})
+    if(!user) return response.status(404).send({message: 'Usuario não encontrado'})
 
     const varify = await Hash.verify(password, user.password)
 
@@ -122,7 +122,7 @@ class UserController {
     const { token } = await auth.generate(user, true)
 
     user.token = token
-
+    
     response.send(user.toJSON())
   }
 }
