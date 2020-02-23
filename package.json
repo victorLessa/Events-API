@@ -29,7 +29,8 @@
     "pg": "^7.18.1"
   },
   "devDependencies": {
-    "husky": "^4.2.3"
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.7"
   },
   "autoload": {
     "App": "./app"
