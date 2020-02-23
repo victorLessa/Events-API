@@ -21,6 +21,6 @@ Route.get('/', () => {
 })
 
 Route.resource('users', 'UserController').middleware(new Map([
-  [['store'], ['userValidation']]
+  [['store'], ['userValidation']], [['update'], ['auth']]
 ]))
-Route.post('signIn', 'UserController.signUp').middleware(['signUp'])
+Route.post('signIn', 'UserController.signIn').middleware(['signIn'])
