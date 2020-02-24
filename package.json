@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test"
+    "pretest": "cross-env NODE_ENV=testing adonis migration:run",
+    "test": "cross-env NODE_ENV=testing adonis test",
+    "posttest": "cross-env NODE_ENV=testing adonis migration:rollback"
   },
   "keywords": [
     "adonisjs",
@@ -30,7 +32,12 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
-    "husky": "^4.2.3"
+    "cross-env": "^7.0.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
+    "prettier": "1.19.1"
   },
   "autoload": {
     "App": "./app"
