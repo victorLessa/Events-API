@@ -21,7 +21,7 @@ class UserValidation {
     const validation = await validate(request.all(), rules)
 
     if (validation.fails()) {
-      return response.send(validation.messages())
+      return response.status(401).send(validation.messages())
     }
     await next()
   }
