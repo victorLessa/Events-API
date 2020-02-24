@@ -106,14 +106,17 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params: { id }, request, response }) {
+    const user = await User.find(id)
+    if(!user) return response.status(404).send({message: 'Usuário não encontrado'})
+    return response.json(await user.delete())
   }
 
   async signIn({ auth, request, response }) {
     let { email, password } = request.all()
     const user = await User.findBy('email', email)
 
-    if(!user) return response.status(404).send({message: 'Usuario não encontrado'})
+    if(!user) return response.status(404).send({message: 'Usuário não encontrado'})
 
     const varify = await Hash.verify(password, user.password)
 
