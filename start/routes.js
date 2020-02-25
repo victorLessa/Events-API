@@ -29,3 +29,4 @@ Route.resource('users', 'UserController').middleware(
 Route.post('signIn', 'UserController.signIn').middleware(['signIn'])
 Route.get('users/details', 'UserController.show').middleware(['auth'])
 Route.delete('users', 'UserController.destroy').middleware(['auth'])
+Route.get('university/:name', 'UniversityController.show').middleware(['auth'])
