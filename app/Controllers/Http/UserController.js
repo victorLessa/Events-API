@@ -18,9 +18,9 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
     const user = await User.all()
-    response.send(user.toJSON()) 
+    response.send(user.toJSON())
   }
 
   /**
@@ -32,8 +32,7 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async create ({ request, response, view }) {
-  }
+  async create({ request, response, view }) {}
 
   /**
    * Create/save a new user.
@@ -43,7 +42,7 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ auth, request, response }) {
+  async store({ auth, request, response }) {
     const userData = request.only(['username', 'email', 'password'])
     const user = await User.create(userData)
 
@@ -61,7 +60,16 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show({ auth, request, response }) {
+    const { id } = await auth.getUser()
+
+    const user = await User.query()
+      .select('university', 'username', 'email', 'created_at')
+      .where('id', id)
+      .fetch()
+
+    if (!user) return response.status(404).json({ message: 'User not found' })
+    return response.send(user.toJSON()[0])
   }
 
   /**
@@ -73,8 +81,7 @@ class UserController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
-  }
+  async edit({ params, request, response, view }) {}
 
   /**
    * Update user details.
@@ -84,15 +91,15 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
     const data = request.all()
-    
+
     const user = await User.findBy('id', params.id)
 
     user.fill(user.toJSON())
 
     user.merge(data)
-    
+
     let result = await user.save()
 
     return response.json(result)
@@ -106,9 +113,11 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params: { id }, request, response }) {
+  async destroy({ auth, request, response }) {
+    const { id } = await auth.getUser()
     const user = await User.find(id)
-    if(!user) return response.status(404).send({message: 'Usuário não encontrado'})
+    if (!user)
+      return response.status(404).send({ message: 'Usuário não encontrado' })
     return response.json(await user.delete())
   }
 
@@ -116,16 +125,17 @@ class UserController {
     let { email, password } = request.all()
     const user = await User.findBy('email', email)
 
-    if(!user) return response.status(404).send({message: 'Usuário não encontrado'})
+    if (!user)
+      return response.status(404).send({ message: 'Usuário não encontrado' })
 
     const varify = await Hash.verify(password, user.password)
 
-    if(!varify) return response.status(400).send({message: 'Senha inválida'})
+    if (!varify) return response.status(400).send({ message: 'Senha inválida' })
 
     const { token } = await auth.generate(user, true)
 
     user.token = token
-    
+
     response.send(user.toJSON())
   }
 }
