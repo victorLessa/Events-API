@@ -23,9 +23,10 @@ Route.get('/', () => {
 Route.resource('users', 'UserController').middleware(
   new Map([
     [['store'], ['userValidation']],
-    [['update', 'destroy'], ['auth']],
+    [['destroy'], ['auth']],
   ])
 )
+Route.patch('users', 'UserController.update').middleware(['auth'])
 Route.post('signIn', 'UserController.signIn').middleware(['signIn'])
 Route.get('users/details', 'UserController.show').middleware(['auth'])
 Route.delete('users', 'UserController.destroy').middleware(['auth'])
