@@ -91,10 +91,10 @@ class UserController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {
+  async update({ auth, request, response }) {
     const data = request.all()
-
-    const user = await User.findBy('id', params.id)
+    const { id } = await auth.getUser()
+    const user = await User.find(id)
 
     user.fill(user.toJSON())
 

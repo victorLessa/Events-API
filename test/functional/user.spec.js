@@ -42,7 +42,7 @@ test('SignIn User', async ({ client }) => {
 
 test('Update User', async ({ client }) => {
   const response = await client
-    .patch(`/users/${user_id}`)
+    .patch(`/users`)
     .header('Authorization', `Bearer ${token}`)
     .send({ university: 'UERJ' })
     .end()
