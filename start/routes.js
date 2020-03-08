@@ -31,3 +31,8 @@ Route.post('signIn', 'UserController.signIn').middleware(['signIn'])
 Route.get('users/details', 'UserController.show').middleware(['auth'])
 Route.delete('users', 'UserController.destroy').middleware(['auth'])
 Route.get('university/:name', 'UniversityController.show').middleware(['auth'])
+
+Route.group(() => {
+  Route.get('', 'EventController.index').middleware(['auth'])
+  Route.post('', 'EventController.store').middleware(['auth'])
+}).prefix('event')

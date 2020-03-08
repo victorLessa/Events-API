@@ -9,9 +9,9 @@ class StudentCalendarSchema extends Schema {
       table.increments()
       table.string('matter').notNullable()
       table.string('teacher').notNullable()
-      table.string('livingRoom')
+      table.string('living_room')
       table
-        .integer('dayOfWeekId')
+        .integer('day_of_week_id')
         .references('id')
         .inTable('users')
       table.timestamps()
