@@ -31,6 +31,9 @@ class User extends Model {
    *
    * @return {Object}
    */
+  events() {
+    return this.hasMany('App/Models/Event')
+  }
   // tokens () {
   //   return this.hasMany('App/Models/Token')
   // }
