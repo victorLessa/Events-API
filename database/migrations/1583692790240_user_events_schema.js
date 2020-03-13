@@ -16,7 +16,7 @@ class UserEventsSchema extends Schema {
         .references('id')
         .inTable('events')
       table
-        .integer('interests_id')
+        .integer('interest_id')
         .references('id')
         .inTable('interests')
       table.timestamps()

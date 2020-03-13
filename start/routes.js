@@ -35,6 +35,7 @@ Route.get('university/:name', 'UniversityController.show').middleware(['auth'])
 Route.group(() => {
   Route.get('/user', 'EventController.index').middleware(['auth'])
   Route.post('', 'EventController.store').middleware(['auth'])
+  Route.post('/interest', 'EventController.interest').middleware(['auth'])
   Route.put('/:id', 'EventController.update').middleware(['auth'])
   Route.get('/:id/delete', 'EventController.destroy').middleware(['auth'])
 }).prefix('events')

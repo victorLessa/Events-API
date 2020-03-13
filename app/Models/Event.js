@@ -10,6 +10,9 @@ class Event extends Model {
   universities() {
     return this.belongsTo('App/Models/University')
   }
+  userEvent() {
+    return this.hasOne('App/Models/UserEvent')
+  }
 }
 
 module.exports = Event

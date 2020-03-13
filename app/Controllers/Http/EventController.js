@@ -1,5 +1,6 @@
 'use strict'
 const Event = use('App/Models/Event')
+const UserEvent = use('App/Models/UserEvent')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -19,12 +20,21 @@ class EventController {
    */
   async index({ auth, request, response }) {
     const { id } = await auth.getUser()
-    const event = (
-      await Event.query()
-        .where('user_id', id)
-        .fetch()
-    ).toJSON()
-    return response.send(event)
+    const event = await UserEvent.query()
+      .select(
+        'title',
+        'description',
+        'locale',
+        'interests.name as interestType',
+        'date',
+        'hour'
+      )
+      .where('user_events.user_id', id)
+      .innerJoin('events', 'events.user_id', id)
+      .innerJoin('interests', 'interests.id', 'user_events.interest_id')
+      .innerJoin('universities', 'universities.id', 'events.university_id')
+      .fetch()
+    return response.send(event.toJSON())
   }
 
   /**
@@ -94,6 +104,12 @@ class EventController {
     const event = await Event.find(params.id)
     await event.delete()
     return response.json({ message: 'deletado(a) com sucesso!' })
+  }
+
+  async interest({ auth, request, response }) {
+    const { id } = await auth.getUser()
+    const userEvent = await UserEvent.create({ user_id: id, ...request.all() })
+    return response.send(userEvent.toJSON())
   }
 }
 
