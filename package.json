@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "adonis serve --dev --debug",
-    "start": "node server.js",
+    "start": "adonis server",
     "pretest": "cross-env NODE_ENV=testing adonis migration:run",
     "test": "cross-env NODE_ENV=testing adonis test",
     "posttest": "cross-env NODE_ENV=testing adonis migration:rollback"
