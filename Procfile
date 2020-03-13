@@ -1,1 +1,1 @@
-release: node ace migration:run seed --force
+release: node ace migration:run --force
