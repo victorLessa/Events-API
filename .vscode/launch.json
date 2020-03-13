@@ -8,12 +8,11 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\server.js",
             "envFile": "${workspaceFolder}/.env",
-            "args": ["adonis serve"]
+            "runtimeArgs": ["run", "dev"],
+            "runtimeExecutable": "npm",
+            "internalConsoleOptions": "openOnFirstSessionStart",
+            "port": 9229
         }
     ]
 }
