@@ -17,9 +17,14 @@ class EventController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response }) {
-    const event = await Event.findAll()
-    return response.send(event.toJSON())
+  async index({ auth, request, response }) {
+    const { id } = await auth.getUser()
+    const event = (
+      await Event.query()
+        .where('user_id', id)
+        .fetch()
+    ).toJSON()
+    return response.send(event)
   }
 
   /**
@@ -58,19 +63,9 @@ class EventController {
    * @param {View} ctx.view
    */
   async show({ auth, request, response }) {
-    const { id } = auth.getUser()
+    const event = await Event.findAll()
+    return response.send(event.toJSON())
   }
-
-  /**
-   * Render a form to update an existing event.
-   * GET events/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {}
 
   /**
    * Update event details.
@@ -80,7 +75,12 @@ class EventController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+    const event = await Event.find(params.id)
+    event.merge(request.all())
+    await event.save()
+    return response.send(event.toJSON())
+  }
 
   /**
    * Delete a event with id.
@@ -90,7 +90,11 @@ class EventController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params, request, response }) {
+    const event = await Event.find(params.id)
+    await event.delete()
+    return response.json({ message: 'deletado(a) com sucesso!' })
+  }
 }
 
 module.exports = EventController

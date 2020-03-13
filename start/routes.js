@@ -33,6 +33,8 @@ Route.delete('users', 'UserController.destroy').middleware(['auth'])
 Route.get('university/:name', 'UniversityController.show').middleware(['auth'])
 
 Route.group(() => {
-  Route.get('', 'EventController.index').middleware(['auth'])
+  Route.get('/user', 'EventController.index').middleware(['auth'])
   Route.post('', 'EventController.store').middleware(['auth'])
-}).prefix('event')
+  Route.put('/:id', 'EventController.update').middleware(['auth'])
+  Route.get('/:id/delete', 'EventController.destroy').middleware(['auth'])
+}).prefix('events')
