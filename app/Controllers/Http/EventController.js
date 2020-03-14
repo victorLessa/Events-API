@@ -29,10 +29,10 @@ class EventController {
         'date',
         'hour'
       )
-      .where('user_events.user_id', id)
       .innerJoin('events', 'events.user_id', id)
       .innerJoin('interests', 'interests.id', 'user_events.interest_id')
       .innerJoin('universities', 'universities.id', 'events.university_id')
+      .where('user_events.user_id', id)
       .fetch()
     return response.send(event.toJSON())
   }

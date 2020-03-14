@@ -1,5 +1,6 @@
 'use strict'
 const User = use('App/Models/User')
+const Event = use('App/Models/Event')
 const Hash = use('Hash')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -43,7 +44,7 @@ class UserController {
    * @param {Response} ctx.response
    */
   async store({ auth, request, response }) {
-    const userData = request.only(['username', 'email', 'password'])
+    const userData = request.all()
     const user = await User.create(userData)
 
     const { token } = await auth.generate(user, true)
@@ -63,13 +64,21 @@ class UserController {
   async show({ auth, request, response }) {
     const { id } = await auth.getUser()
 
-    const user = await User.query()
-      .select('university', 'username', 'email', 'created_at')
-      .where('id', id)
-      .fetch()
-
+    const user = (
+      await User.query()
+        .where('users.id', id)
+        .select('users.username', 'universities.name', 'users.email')
+        .innerJoin('universities', 'universities.id', 'users.university_id')
+        .fetch()
+    ).toJSON()
+    const event = (
+      await Event.query()
+        .where('user_id', id)
+        .fetch()
+    ).toJSON()
+    user[0].events = event
     if (!user) return response.status(404).json({ message: 'User not found' })
-    return response.send(user.toJSON()[0])
+    return response.send(user[0])
   }
 
   /**

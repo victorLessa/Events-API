@@ -16,7 +16,10 @@ class UserSchema extends Schema {
         .notNullable()
         .unique()
       table.string('password', 60).notNullable()
-      table.string('university')
+      table
+        .integer('university_id')
+        .references('id')
+        .inTable('universities')
       table.string('course')
       table.string('athletic')
       table.timestamps()
