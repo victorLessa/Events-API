@@ -76,8 +76,8 @@ class UserController {
         .where('user_id', id)
         .fetch()
     ).toJSON()
-    user[0].events = event
     if (!user) return response.status(404).json({ message: 'User not found' })
+    user[0].events = event
     return response.send(user[0])
   }
 

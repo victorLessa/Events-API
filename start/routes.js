@@ -38,4 +38,8 @@ Route.group(() => {
   Route.post('/interest', 'EventController.interest').middleware(['auth'])
   Route.put('/:id', 'EventController.update').middleware(['auth'])
   Route.get('/:id/delete', 'EventController.destroy').middleware(['auth'])
+  Route.get(
+    '/getEventByDay/:date',
+    'EventController.getEventsByCurrentDay'
+  ).middleware(['auth'])
 }).prefix('events')

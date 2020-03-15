@@ -111,6 +111,15 @@ class EventController {
     const userEvent = await UserEvent.create({ user_id: id, ...request.all() })
     return response.send(userEvent.toJSON())
   }
+  async getEventsByCurrentDay({ response, request }) {
+    const { date } = request.params
+    const events = (
+      await Event.query()
+        .where('date', date)
+        .fetch()
+    ).toJSON()
+    return response.send(events)
+  }
 }
 
 module.exports = EventController
