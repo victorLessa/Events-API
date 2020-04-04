@@ -13,6 +13,15 @@ class Event extends Model {
   userEvent() {
     return this.hasOne('App/Models/UserEvent')
   }
+  static get dates() {
+    return super.dates.concat(['date'])
+  }
+  static castDates(field, value) {
+    if (field === 'date') {
+      return value.format('DD-MM-YYYY')
+    }
+    return super.formatDates(field, value)
+  }
 }
 
 module.exports = Event
