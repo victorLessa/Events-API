@@ -1,6 +1,6 @@
 'use strict'
 const Event = use('App/Models/Event')
-const UserEvent = use('App/Models/UserEvent')
+const User = use('App/Models/User')
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -20,19 +20,11 @@ class EventController {
    */
   async index({ auth, request, response }) {
     const { id } = await auth.getUser()
-    const event = await UserEvent.query()
-      .select(
-        'title',
-        'description',
-        'locale',
-        'interests.name as interestType',
-        'date',
-        'hour'
-      )
-      .innerJoin('events', 'events.user_id', id)
-      .innerJoin('interests', 'interests.id', 'user_events.interest_id')
+    const event = await User.query()
+      .select('title', 'description', 'locale', 'date', 'hour')
+      .innerJoin('events', 'events.user_id', 'users.id')
       .innerJoin('universities', 'universities.id', 'events.university_id')
-      .where('user_events.user_id', id)
+      .where('users.id', id)
       .fetch()
     return response.send(event.toJSON())
   }
