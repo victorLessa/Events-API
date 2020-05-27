@@ -1,28 +1,35 @@
-# Adonis API application
+# Api Event
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
+## 🚀 Tecnologias
 
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+- Adonisjs
 
-## Setup
+## Description
 
-Use the adonis command to install the blueprint
+- Api criada para projeto pessoal onde eu crio um aplicativo em flutter [Aplicação flutter](https://github.com/VictorLessa/eUni-App-Flutter) com uma api em Adonisjs.
 
-```bash
-adonis new yardstick --api-only
+# Getting Started
+
+### Install [Adonisjs](https://adonisjs.com/)
+
+```shell
+  npm i -g @adonisjs/cli
 ```
 
-or manually clone the repo and then run `npm install`.
+### Run to install dependences
 
+```shell
+  npm i
+```
 
-### Migrations
+### Run to install migrations
 
-Run the following command to run startup migrations.
-
-```js
+```shell
 adonis migration:run
+```
+
+### Run to started serve
+
+```sheel
+adonis serve
 ```

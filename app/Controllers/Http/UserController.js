@@ -68,7 +68,7 @@ class UserController {
       await User.query()
         .where('users.id', id)
         .select('users.username', 'universities.name', 'users.email')
-        .innerJoin('universities', 'universities.id', 'users.university_id')
+        .leftJoin('universities', 'universities.id', 'users.university_id')
         .fetch()
     ).toJSON()
     const event = (
@@ -77,7 +77,7 @@ class UserController {
         .fetch()
     ).toJSON()
     if (!user) return response.status(404).json({ message: 'User not found' })
-    user[0].events = event
+    user[0].events ? (user[0].events = event) : ''
     return response.send(user[0])
   }
 

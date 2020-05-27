@@ -44,7 +44,7 @@ test('Update User', async ({ client }) => {
   const response = await client
     .patch(`/users`)
     .header('Authorization', `Bearer ${token}`)
-    .send({ university: 'UERJ' })
+    .send({ email: 'victorcamara16@gmail.com' })
     .end()
 
   response.assertStatus(200)
@@ -57,9 +57,8 @@ test('Details User', async ({ client }) => {
     .end()
 
   response.assertJSONSubset({
-    university: 'UERJ',
     username: 'Victor',
-    email: 'victordsgnr@gmail.com',
+    email: 'victorcamara16@gmail.com',
   })
   response.assertStatus(200)
 }).timeout(6000)
